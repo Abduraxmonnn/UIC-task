@@ -68,7 +68,7 @@ class TagsProductSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     category = CategoryProductSerializer(many=False)
     tags = TagsProductSerializer(many=True)
-    total_price = serializers.ReadOnlyField()
+    total_price = serializers.ReadOnlyField()  # Handler annotated value
 
     class Meta:
         model = Product
@@ -77,7 +77,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
 ### 2. CategoryProductSerializer
 
-This serializer converts `Category` model instances into JSON and includes the computed field `product_total_price`, which
+This serializer converts `Category` model instances into JSON and includes the computed field `product_total_price`,
+which
 represents the sum of unit_price * quantity for all products in the category.
 
 **Code**:
@@ -85,7 +86,7 @@ represents the sum of unit_price * quantity for all products in the category.
 ```python
 # serializers.py
 class CategoryProductSerializer(serializers.ModelSerializer):
-    product_total_price = serializers.ReadOnlyField()
+    product_total_price = serializers.ReadOnlyField()  # Handler annotated value
 
     class Meta:
         model = Category
@@ -103,24 +104,24 @@ The response for a `Product` includes details like the category, tags, and a com
 ```json
 {
   "id": 1,
-  "title": "Sample Product",
   "category": {
     "id": 1,
-    "title": "Sample Category"
+    "title": "Category 1"
   },
   "tags": [
     {
-      "id": 1,
-      "title": "Tag 1",
+      "id": 2,
       "category": {
         "id": 1,
-        "title": "Tag Category"
-      }
+        "title": "tag category 1"
+      },
+      "title": "Tag 2"
     }
   ],
-  "unit_price": 100.0,
-  "quantity": 2,
-  "total_price": 200.0
+  "total_price": 2,
+  "title": "Product 3",
+  "unit_price": 500.0,
+  "quantity": 20
 }
 ```
 
@@ -134,7 +135,7 @@ category.
 ```json
 {
   "id": 1,
-  "title": "Sample Category",
-  "product_total_price": 1000.0
+  "product_total_price": 15010.0,
+  "title": "Category 1"
 }
 ```
