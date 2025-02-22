@@ -26,6 +26,9 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'debug_toolbar',
+    'django_extensions',
+    'corsheaders',
+    "graphene_django",
     'main'
 ]
 
@@ -38,6 +41,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
+    'corsheaders.middleware.CorsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
@@ -113,3 +117,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',  # or whatever your frontend URL is
+]
+
+GRAPHENE = {
+    "SCHEMA": "main.graphql.schema.schema"
+}
